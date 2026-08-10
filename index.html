@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASF · Advanced Smart Formulations — CAD, Impresión 3D y Software</title>
+<meta name="description" content="ASF Advanced Smart Formulations: diseño asistido por computadora, impresión 3D y desarrollo de herramientas de software para máquinas de impresión 3D.">
+<link rel="icon" type="image/png" href="ASF_Ingenieria_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#FFFFFF;
+    --steel:#F3F4F5;
+    --steel-2:#E7E9EB;
+    --cyan:#2E9FE0;
+    --orange:#2E9FE0;
+    --paper:#17191B;
+    --slate:#6E7377;
+    --grid-line: rgba(23,25,27,0.08);
+    --radius: 3px;
+    --maxw: 1180px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--graphite);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; font-weight:600; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  img{max-width:100%; display:block;}
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  /* ---------- NAV ---------- */
+  header.site{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(255,255,255,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--grid-line);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:74px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand img.logo{ width:38px; height:38px; }
+  .brand .mark{ font-size:1.35rem; font-weight:700; letter-spacing:0.02em; }
+  .brand .mark span{ color:var(--orange); }
+  .brand .tag{ font-size:0.68rem; color:var(--slate); letter-spacing:0.1em; text-transform:uppercase; }
+  @media(max-width:480px){ .brand .tag{ font-size:0.56rem; letter-spacing:0.06em; } }
+
+  nav.links{ display:none; align-items:center; gap:34px; }
+  nav.links a{ font-size:0.85rem; color:var(--slate); transition:color .2s; position:relative; }
+  nav.links a:hover{ color:var(--paper); }
+  @media(min-width:900px){ nav.links{ display:flex; } }
+
+  .cta-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.75rem; letter-spacing:0.04em;
+    text-transform:uppercase; padding:11px 20px; border-radius:var(--radius);
+    background:var(--orange); color:#FFFFFF; font-weight:500; border:1px solid var(--orange);
+    transition:background .2s, color .2s; white-space:nowrap;
+  }
+  .cta-btn:hover{ background:transparent; color:var(--orange); }
+  .cta-btn.ghost{ background:transparent; color:var(--cyan); border-color:var(--cyan); }
+  .cta-btn.ghost:hover{ background:var(--cyan); color:#FFFFFF; }
+
+  .burger{ display:flex; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:8px; }
+  .burger span{ width:22px; height:2px; background:var(--paper); display:block; }
+  @media(min-width:900px){ .burger{ display:none; } }
+
+  #mobileMenu{ display:none; flex-direction:column; gap:2px; padding:8px 28px 20px; border-top:1px solid var(--grid-line); }
+  #mobileMenu.open{ display:flex; }
+  #mobileMenu a{ padding:12px 0; font-size:0.95rem; border-bottom:1px solid var(--grid-line); color:var(--paper); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; padding:150px 0 90px; overflow:hidden;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size:44px 44px;
+  }
+  .corner{ position:absolute; width:22px; height:22px; border:1.5px solid var(--slate); opacity:.6; }
+  .corner.tl{ top:24px; left:24px; border-right:none; border-bottom:none; }
+  .corner.tr{ top:24px; right:24px; border-left:none; border-bottom:none; }
+  .corner.bl{ bottom:24px; left:24px; border-right:none; border-top:none; }
+  .corner.br{ bottom:24px; right:24px; border-left:none; border-top:none; }
+
+  .readout{ position:absolute; font-size:0.68rem; color:var(--slate); letter-spacing:0.05em; opacity:.75; }
+
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:56px; align-items:center; }
+  @media(min-width:960px){ .hero-grid{ grid-template-columns:1.05fr 0.95fr; gap:40px; } }
+
+  .eyebrow{ display:flex; align-items:center; gap:10px; font-size:0.72rem; color:var(--cyan); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:22px; }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--cyan); }
+
+  .hero h1{ font-size:clamp(2.1rem, 5vw, 3.4rem); line-height:1.08; margin-bottom:22px; }
+  .hero h1 em{ font-style:normal; color:var(--orange); }
+  .hero p.lead{ color:var(--slate); font-size:1.05rem; max-width:52ch; margin-bottom:34px; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+
+  .toolpath-box{ position:relative; }
+  .toolpath-box svg{ width:100%; height:auto; }
+  .draw-path{
+    fill:none; stroke:var(--cyan); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;
+    stroke-dasharray:900; stroke-dashoffset:900;
+    animation:draw 2.6s ease forwards .3s;
+  }
+  .draw-path.secondary{ stroke:var(--paper); stroke-dasharray:500; stroke-dashoffset:500; animation:draw2 2.2s ease forwards 1.4s; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes draw2{ to{ stroke-dashoffset:0; } }
+  @media (prefers-reduced-motion: reduce){
+    .draw-path, .draw-path.secondary{ animation:none; stroke-dashoffset:0; }
+  }
+  .nozzle-dot{ fill:var(--orange); }
+
+  /* ---------- LAYER LABEL ---------- */
+  .layer-tag{
+    display:inline-flex; align-items:center; gap:10px; font-size:0.72rem; color:var(--slate);
+    letter-spacing:0.12em; text-transform:uppercase; margin-bottom:16px;
+  }
+  .layer-tag .num{ color:var(--orange); }
+  .layer-tag::after{ content:''; flex:0 0 60px; height:1px; background:var(--grid-line); }
+
+  section{ padding:96px 0; border-top:1px solid var(--grid-line); }
+  .section-head{ max-width:640px; margin-bottom:52px; }
+  .section-head h2{ font-size:clamp(1.6rem,3.2vw,2.3rem); margin-bottom:14px; }
+  .section-head p{ color:var(--slate); }
+
+  /* ---------- SERVICIOS ---------- */
+  .grid-services{ display:grid; grid-template-columns:1fr; gap:1px; background:var(--grid-line); border:1px solid var(--grid-line); }
+  @media(min-width:720px){ .grid-services{ grid-template-columns:repeat(2,1fr); } }
+  @media(min-width:1080px){ .grid-services{ grid-template-columns:repeat(3,1fr); } }
+  .service-card{ background:var(--graphite); padding:34px 30px; display:flex; flex-direction:column; gap:14px; transition:background .25s; }
+  .service-card:hover{ background:var(--steel); }
+  .service-card .icon{ width:38px; height:38px; }
+  .service-card h3{ font-size:1.12rem; }
+  .service-card p{ color:var(--slate); font-size:0.92rem; }
+  .spec{ margin-top:auto; padding-top:14px; border-top:1px solid var(--grid-line); font-size:0.7rem; color:var(--cyan); letter-spacing:0.03em; }
+
+  /* ---------- PROCESO ---------- */
+  .process-list{ display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:56px 1fr; gap:22px; padding:26px 0; border-top:1px solid var(--grid-line); }
+  .process-item:last-child{ border-bottom:1px solid var(--grid-line); }
+  .process-item .step{ font-family:'IBM Plex Mono', monospace; color:var(--orange); font-size:0.95rem; }
+  .process-item h3{ font-size:1.05rem; margin-bottom:6px; }
+  .process-item p{ color:var(--slate); font-size:0.92rem; max-width:64ch; }
+
+  /* ---------- PROYECTOS ---------- */
+  .grid-projects{ display:grid; grid-template-columns:1fr; gap:22px; }
+  @media(min-width:720px){ .grid-projects{ grid-template-columns:repeat(2,1fr); } }
+  @media(min-width:1080px){ .grid-projects{ grid-template-columns:repeat(3,1fr); } }
+  .project-card{ border:1px solid var(--grid-line); border-radius:var(--radius); overflow:hidden; background:var(--steel); }
+  .project-thumb{
+    aspect-ratio:4/3; background:
+      repeating-linear-gradient(135deg, var(--steel-2) 0 2px, transparent 2px 14px), var(--steel);
+    display:flex; align-items:center; justify-content:center; color:var(--slate); font-size:0.7rem; letter-spacing:0.08em;
+    overflow:hidden;
+  }
+  .project-thumb img{ width:100%; height:100%; object-fit:cover; }
+  .project-info{ padding:18px 20px; }
+  .project-info h3{ font-size:0.98rem; margin-bottom:4px; }
+  .project-info p{ color:var(--slate); font-size:0.82rem; }
+  .project-info .mono{ display:block; margin-top:10px; font-size:0.68rem; color:var(--cyan); }
+
+  /* ---------- NOSOTROS ---------- */
+  .about-grid{ display:grid; grid-template-columns:1fr; gap:50px; }
+  @media(min-width:900px){ .about-grid{ grid-template-columns:1fr 1fr; } }
+  .about-grid p{ color:var(--slate); margin-bottom:18px; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--grid-line); border:1px solid var(--grid-line); margin-top:30px; }
+  .stat{ background:var(--graphite); padding:20px 16px; }
+  .stat .num{ font-family:'Space Grotesk',sans-serif; font-size:1.6rem; color:var(--cyan); }
+  .stat .label{ font-size:0.68rem; color:var(--slate); letter-spacing:0.06em; text-transform:uppercase; margin-top:4px; }
+
+  /* ---------- CONTACTO ---------- */
+  .contact-grid{ display:grid; grid-template-columns:1fr; gap:50px; }
+  @media(min-width:900px){ .contact-grid{ grid-template-columns:0.9fr 1.1fr; } }
+  .contact-info a.item{ display:flex; align-items:center; gap:12px; padding:14px 0; border-top:1px solid var(--grid-line); font-size:0.92rem; color:var(--paper); }
+  .contact-info a.item:hover{ color:var(--orange); }
+  .contact-info .item:last-child{ border-bottom:1px solid var(--grid-line); }
+
+  form.contact-form{ display:flex; flex-direction:column; gap:16px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:0.72rem; color:var(--slate); letter-spacing:0.05em; text-transform:uppercase; }
+  .field input, .field textarea{
+    background:var(--steel); border:1px solid var(--grid-line); color:var(--paper);
+    padding:12px 14px; border-radius:var(--radius); font-family:'Inter',sans-serif; font-size:0.92rem;
+  }
+  .field textarea{ resize:vertical; min-height:110px; }
+  .field input:focus, .field textarea:focus{ border-color:var(--cyan); }
+  .submit-note{ font-size:0.78rem; color:var(--slate); margin-top:4px; }
+
+  footer{ padding:40px 0; border-top:1px solid var(--grid-line); }
+  .foot-row{ display:flex; flex-direction:column; gap:14px; justify-content:space-between; align-items:flex-start; font-size:0.78rem; color:var(--slate); }
+  @media(min-width:720px){ .foot-row{ flex-direction:row; align-items:center; } }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <div class="brand">
+      <img class="logo" src="ASF_Ingenieria_logo.png" alt="Logotipo ASF">
+      <span class="tag mono">Advanced Smart Formulations</span>
+    </div>
+    <nav class="links">
+      <a href="#servicios">Servicios</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#contacto" class="cta-btn ghost">Contacto</a>
+    </nav>
+    <button class="burger" id="burgerBtn" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mobileMenu">
+    <a href="#servicios">Servicios</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="corner tl"></span><span class="corner tr"></span>
+  <span class="corner bl"></span><span class="corner br"></span>
+  <span class="readout mono" style="top:100px; left:36px;">X:118.40 Y:86.02 Z:0.20</span>
+  <span class="readout mono" style="bottom:70px; right:40px;">FEED 45mm/s · LAYER 0.20mm</span>
+
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Diseño · Impresión 3D · Software para máquinas</div>
+      <h1>Convertimos ideas en <em>piezas reales</em> y en las herramientas que las imprimen.</h1>
+      <p class="lead">ASF Advanced Smart Formulations diseña en CAD, fabrica por impresión 3D y desarrolla software y apps a la medida para controlar y optimizar máquinas de impresión 3D.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="cta-btn">Solicitar cotización</a>
+        <a href="#servicios" class="cta-btn ghost">Ver servicios</a>
+      </div>
+    </div>
+
+    <div class="toolpath-box">
+      <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <polygon class="draw-path" points="210,40 340,110 340,250 210,320 80,250 80,110" />
+        <polygon class="draw-path secondary" points="210,110 280,150 280,220 210,260 140,220 140,150" />
+        <circle class="nozzle-dot" cx="210" cy="110" r="4"></circle>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="wrap">
+    <div class="layer-tag"><span class="num">LAYER 01</span> Servicios</div>
+    <div class="section-head">
+      <h2>Tres disciplinas, un mismo flujo de trabajo.</h2>
+      <p>Del boceto a la pieza terminada, y del hardware al software que lo controla.</p>
+    </div>
+
+    <div class="grid-services">
+      <div class="service-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#17191B" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+        <h3>Diseño CAD</h3>
+        <p>Modelado paramétrico de piezas, ensambles y prototipos, listo para manufactura o impresión 3D.</p>
+        <div class="spec mono">SOLIDWORKS · FUSION 360 · STEP/STL</div>
+      </div>
+      <div class="service-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#17191B" stroke-width="1.4"><path d="M12 2v6M6 8l6-6 6 6M4 12h16v9H4z"/></svg>
+        <h3>Impresión 3D</h3>
+        <p>Producción de piezas funcionales por impresión de filamento (FDM), en distintos materiales y acabados.</p>
+        <div class="spec mono">PLA · PETG · ASA · NYLON + FIBRA DE CARBONO</div>
+      </div>
+      <div class="service-card">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#2E9FE0" stroke-width="1.4"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg>
+        <h3>Software y apps para impresoras</h3>
+        <p>Herramientas a la medida para controlar, monitorear y automatizar máquinas de impresión 3D.</p>
+        <div class="spec mono">FIRMWARE · G-CODE · APPS DE CONTROL</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proceso">
+  <div class="wrap">
+    <div class="layer-tag"><span class="num">LAYER 02</span> Proceso</div>
+    <div class="section-head">
+      <h2>Así construimos cada proyecto.</h2>
+      <p>El mismo orden en que una impresora construye una pieza: capa sobre capa, hasta el resultado final.</p>
+    </div>
+
+    <div class="process-list">
+      <div class="process-item">
+        <span class="step mono">01</span>
+        <div><h3>Levantamiento y diseño CAD</h3><p>Entendemos el problema y modelamos la pieza o el ensamble con las tolerancias que necesita.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step mono">02</span>
+        <div><h3>Simulación y preparación</h3><p>Revisamos el diseño, elegimos material y preparamos el archivo para impresión (slicing, soportes, orientación).</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step mono">03</span>
+        <div><h3>Impresión</h3><p>Fabricamos la pieza en la tecnología adecuada, monitoreando el proceso capa por capa.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step mono">04</span>
+        <div><h3>Acabado y control de calidad</h3><p>Post-procesamos y verificamos dimensiones antes de la entrega.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="step mono">05</span>
+        <div><h3>Software e integración</h3><p>Si el proyecto lo requiere, entregamos la herramienta o app que controla y automatiza el equipo.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos">
+  <div class="wrap">
+    <div class="layer-tag"><span class="num">LAYER 03</span> Proyectos</div>
+    <div class="section-head">
+      <h2>Portafolio.</h2>
+      <p>Algunos de los proyectos que hemos diseñado, impreso y desarrollado.</p>
+    </div>
+
+    <div class="grid-projects">
+      <div class="project-card">
+        <div class="project-thumb"><img src="projects/proyecto-asiento-deportivo.png" alt="Componente asiento deportivo, modelo CAD"></div>
+        <div class="project-info">
+          <h3>Componente asiento deportivo</h3>
+          <p>Diseño CAD de componente de asiento deportivo.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb"><img src="projects/proyecto-boquilla-aspiradora.png" alt="Boquilla para aspiradora impresa en 3D"></div>
+        <div class="project-info">
+          <h3>Boquilla aspiradora</h3>
+          <p>Diseño e impresión de boquilla para aspiradora.</p>
+          <span class="mono">MATERIAL · PETG</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb"><img src="projects/proyecto-asf-monitor-remote.png" alt="App ASF Monitor Remote, monitoreo de impresora 3D"></div>
+        <div class="project-info">
+          <h3>ASF Monitor Remote</h3>
+          <p>App móvil de monitoreo para impresoras 3D.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <div class="wrap">
+    <div class="layer-tag"><span class="num">LAYER 04</span> Nosotros</div>
+    <div class="about-grid">
+      <div>
+        <h2 style="font-size:clamp(1.6rem,3vw,2.1rem); margin-bottom:18px;">Diseñamos, imprimimos y programamos bajo un mismo techo.</h2>
+        <p>ASF Advanced Smart Formulations nace para cerrar la distancia entre una idea y una pieza funcional. Trabajamos con talleres, marcas y equipos de ingeniería que necesitan pasar de un boceto a un prototipo, y de un prototipo a una herramienta de software que controle su propia máquina de impresión.</p>
+        <p>Cada proyecto pasa por el mismo criterio: precisión en el modelo, control en la impresión y software confiable detrás.</p>
+      </div>
+      <div>
+        <p>Con sede en León, Guanajuato, damos servicio a clientes locales y remotos, con entregas ajustadas a manufactura ligera, prototipado industrial y desarrollo de herramientas de control para makers y talleres.</p>
+        <div class="stat-row">
+          <div class="stat"><div class="num mono">CAD</div><div class="label">Diseño paramétrico</div></div>
+          <div class="stat"><div class="num mono">3D</div><div class="label">Impresión FDM</div></div>
+          <div class="stat"><div class="num mono">APP</div><div class="label">Software a medida</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="layer-tag"><span class="num">LAYER 05</span> Contacto</div>
+    <div class="section-head">
+      <h2>Cuéntanos qué necesitas construir.</h2>
+      <p>Escríbenos los detalles de tu proyecto y te respondemos con una propuesta.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info">
+        <a class="item" href="mailto:advanced.smart.formulations@gmail.com">
+          <span class="mono">EMAIL</span>&nbsp;&nbsp; advanced.smart.formulations@gmail.com
+        </a>
+        <a class="item" href="tel:+523521636808">
+          <span class="mono">TEL</span>&nbsp;&nbsp; 352 163 6808
+        </a>
+        <a class="item" href="#" onclick="return false;">
+          <span class="mono">UBICACIÓN</span>&nbsp;&nbsp; León, Guanajuato, México
+        </a>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="field">
+          <label for="name">Nombre</label>
+          <input type="text" id="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Correo</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="field">
+          <label for="message">Cuéntanos tu proyecto</label>
+          <textarea id="message" required></textarea>
+        </div>
+        <button type="submit" class="cta-btn">Enviar mensaje</button>
+        <p class="submit-note">Al enviar se abrirá tu programa de correo con el mensaje listo para mandar a ASF.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="mono">© <span id="year"></span> ASF · ADVANCED SMART FORMULATIONS</div>
+    <div>León, Guanajuato, México</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const burger = document.getElementById('burgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }));
+
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    const subject = encodeURIComponent('Nuevo proyecto — ' + name);
+    const body = encodeURIComponent(message + '\n\nCorreo de contacto: ' + email);
+    window.location.href = `mailto:advanced.smart.formulations@gmail.com?subject=${subject}&body=${body}`;
+  });
+</script>
+
+</body>
+</html>
